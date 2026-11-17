@@ -1,0 +1,891 @@
+{
+ "title": "How Magnets Work",
+ "scenes": [
+  {
+   "beats": [
+    {
+     "say": "Have you ever wondered how magnets can push and pull across empty space without ever touching?",
+     "draw": [
+      {
+       "x": 640,
+       "y": 80,
+       "id": "t1",
+       "cue": "magnets",
+       "size": "lg",
+       "text": "The Invisible Force",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "h": 120,
+       "w": 180,
+       "x": 360,
+       "y": 380,
+       "id": "mag_left",
+       "cue": "push",
+       "fill": "red",
+       "size": "sm",
+       "text": "North",
+       "type": "box",
+       "color": "red"
+      },
+      {
+       "h": 120,
+       "w": 180,
+       "x": 920,
+       "y": 380,
+       "id": "mag_right",
+       "cue": "pull",
+       "fill": "red",
+       "size": "sm",
+       "text": "North",
+       "type": "box",
+       "color": "red"
+      }
+     ]
+    },
+    {
+     "say": "When you bring identical poles close together, an invisible push resists your hand.",
+     "draw": [
+      {
+       "id": "hl_gap",
+       "cue": "close together",
+       "type": "highlight",
+       "color": "red",
+       "style": "circle",
+       "target": "mag_left"
+      }
+     ]
+    },
+    {
+     "say": "This mysterious field is created by tiny subatomic particles inside the material itself.",
+     "draw": [
+      {
+       "x": 640,
+       "y": 580,
+       "id": "sub_text",
+       "cue": "subatomic particles",
+       "size": "md",
+       "text": "The secret is inside atoms!",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "id": "hl_sub",
+       "cue": "material itself",
+       "type": "highlight",
+       "color": "red",
+       "style": "underline",
+       "target": "sub_text"
+      }
+     ]
+    }
+   ],
+   "clear": true,
+   "title": "The Mysterious Force"
+  },
+  {
+   "beats": [
+    {
+     "say": "All matter is made of atoms, circled by tiny negative particles called electrons.",
+     "draw": [
+      {
+       "x": 640,
+       "y": 80,
+       "id": "t2",
+       "cue": "atoms",
+       "size": "lg",
+       "text": "Electrons: Tiny Magnets",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "h": 140,
+       "w": 212.02319999999997,
+       "x": 640,
+       "y": 380,
+       "id": "nucleus",
+       "cue": "tiny negative particles",
+       "fill": "purple",
+       "size": "sm",
+       "text": "Nucleus",
+       "type": "ellipse",
+       "color": "purple"
+      },
+      {
+       "h": 90.36239999999998,
+       "w": 96.6,
+       "x": 340,
+       "y": 380,
+       "id": "electron",
+       "cue": "electrons",
+       "fill": "blue",
+       "size": "sm",
+       "text": "e-",
+       "type": "ellipse",
+       "color": "blue"
+      }
+     ]
+    },
+    {
+     "say": "Electrons have a quantum property known as spin, turning each one into a miniature bar magnet.",
+     "draw": [
+      {
+       "id": "spin_orbit",
+       "cue": "quantum property",
+       "size": "sm",
+       "type": "curve",
+       "arrow": true,
+       "color": "ink",
+       "dashed": false,
+       "points": [
+        [
+         340,
+         310
+        ],
+        [
+         640,
+         260
+        ],
+        [
+         940,
+         380
+        ],
+        [
+         640,
+         500
+        ],
+        [
+         340,
+         450
+        ]
+       ]
+      },
+      {
+       "id": "spin_vec",
+       "x1": 340,
+       "x2": 340,
+       "y1": 340,
+       "y2": 240,
+       "cue": "miniature bar magnet",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "orange",
+       "dashed": false
+      },
+      {
+       "x": 340,
+       "y": 210,
+       "id": "spin_lbl",
+       "cue": "spin",
+       "size": "sm",
+       "text": "Spin Axis",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      }
+     ]
+    },
+    {
+     "say": "In most elements, electrons pair up in opposing directions, cancelling out their magnetic fields completely.",
+     "draw": [
+      {
+       "h": 90.36239999999998,
+       "w": 96.6,
+       "x": 940,
+       "y": 380,
+       "id": "e_cancel",
+       "cue": "pair up",
+       "fill": "blue",
+       "size": "sm",
+       "text": "e-",
+       "type": "ellipse",
+       "color": "blue"
+      },
+      {
+       "id": "spin_down",
+       "x1": 940,
+       "x2": 940,
+       "y1": 420,
+       "y2": 520,
+       "cue": "opposing directions",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "orange",
+       "dashed": false
+      },
+      {
+       "x": 940,
+       "y": 560,
+       "id": "cancel_lbl",
+       "cue": "cancelling out",
+       "size": "md",
+       "text": "Net Field: Zero",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      }
+     ]
+    }
+   ],
+   "clear": true,
+   "title": "Spinning Electrons"
+  },
+  {
+   "beats": [
+    {
+     "say": "In materials like iron, nickel, and cobalt, special atomic structures leave unpaired electron spins free to align.",
+     "draw": [
+      {
+       "x": 640,
+       "y": 80,
+       "id": "t3",
+       "cue": "iron",
+       "size": "lg",
+       "text": "Magnetic Domains",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "h": 320,
+       "w": 760,
+       "x": 640,
+       "y": 420,
+       "id": "iron_bar",
+       "cue": "unpaired electron spins",
+       "size": "sm",
+       "type": "box",
+       "color": "gray"
+      },
+      {
+       "id": "grid_v",
+       "x1": 640,
+       "x2": 640,
+       "y1": 260,
+       "y2": 580,
+       "cue": "align",
+       "bend": 0,
+       "head": "none",
+       "size": "sm",
+       "type": "line",
+       "color": "ink",
+       "dashed": true
+      },
+      {
+       "id": "grid_h",
+       "x1": 260,
+       "x2": 1020,
+       "y1": 420,
+       "y2": 420,
+       "cue": "materials like iron",
+       "bend": 0,
+       "head": "none",
+       "size": "sm",
+       "type": "line",
+       "color": "ink",
+       "dashed": true
+      }
+     ]
+    },
+    {
+     "say": "Trillions of atoms team up into clusters called magnetic domains.",
+     "draw": [
+      {
+       "x": 450,
+       "y": 300,
+       "id": "d1_name",
+       "cue": "magnetic domains",
+       "size": "sm",
+       "text": "Domain",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "id": "a_rand1",
+       "x1": 400,
+       "x2": 500,
+       "y1": 360,
+       "y2": 320,
+       "cue": "team up",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": false
+      },
+      {
+       "id": "a_rand2",
+       "x1": 820,
+       "x2": 760,
+       "y1": 360,
+       "y2": 300,
+       "cue": "clusters",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": false
+      }
+     ]
+    },
+    {
+     "say": "In ordinary iron, domains point every which way, so their magnetic forces jumble and cancel each other out.",
+     "draw": [
+      {
+       "id": "a_rand3",
+       "x1": 420,
+       "x2": 480,
+       "y1": 480,
+       "y2": 540,
+       "cue": "every which way",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": false
+      },
+      {
+       "id": "a_rand4",
+       "x1": 840,
+       "x2": 820,
+       "y1": 530,
+       "y2": 450,
+       "cue": "forces jumble",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": false
+      },
+      {
+       "x": 640,
+       "y": 640,
+       "id": "rand_state",
+       "cue": "cancel each other",
+       "size": "md",
+       "text": "Unmagnetized: Random Domains",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      }
+     ]
+    }
+   ],
+   "clear": true,
+   "title": "Magnetic Domains"
+  },
+  {
+   "beats": [
+    {
+     "say": "Watch what happens when you expose that iron to a powerful external magnetic field.",
+     "draw": [
+      {
+       "x": 640,
+       "y": 80,
+       "id": "t4",
+       "cue": "powerful external",
+       "size": "lg",
+       "text": "Locking into Alignment",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "h": 280,
+       "w": 760,
+       "x": 640,
+       "y": 400,
+       "id": "aligned_bar",
+       "cue": "magnetic field",
+       "size": "sm",
+       "type": "box",
+       "color": "ink"
+      }
+     ]
+    },
+    {
+     "say": "The borders shift, and millions of scattered domains suddenly snap into the same direction.",
+     "draw": [
+      {
+       "id": "al_1",
+       "x1": 340,
+       "x2": 460,
+       "y1": 350,
+       "y2": 350,
+       "cue": "same direction",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "teal",
+       "dashed": false
+      },
+      {
+       "id": "al_2",
+       "x1": 580,
+       "x2": 700,
+       "y1": 350,
+       "y2": 350,
+       "cue": "scattered domains",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "teal",
+       "dashed": false
+      },
+      {
+       "id": "al_3",
+       "x1": 820,
+       "x2": 940,
+       "y1": 350,
+       "y2": 350,
+       "cue": "suddenly snap",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "teal",
+       "dashed": false
+      },
+      {
+       "id": "al_4",
+       "x1": 460,
+       "x2": 580,
+       "y1": 450,
+       "y2": 450,
+       "cue": "borders shift",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "teal",
+       "dashed": false
+      },
+      {
+       "id": "al_5",
+       "x1": 700,
+       "x2": 820,
+       "y1": 450,
+       "y2": 450,
+       "cue": "into",
+       "bend": 0,
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "teal",
+       "dashed": false
+      }
+     ]
+    },
+    {
+     "say": "When their forces add together instead of fighting, the entire object gains a unified north and south pole.",
+     "draw": [
+      {
+       "h": 280,
+       "w": 120,
+       "x": 200,
+       "y": 400,
+       "id": "lbl_south",
+       "cue": "south pole",
+       "fill": "blue",
+       "size": "sm",
+       "text": "South",
+       "type": "box",
+       "color": "blue"
+      },
+      {
+       "h": 280,
+       "w": 120,
+       "x": 1080,
+       "y": 400,
+       "id": "lbl_north",
+       "cue": "north",
+       "fill": "red",
+       "size": "sm",
+       "text": "North",
+       "type": "box",
+       "color": "red"
+      },
+      {
+       "id": "hl_poles",
+       "cue": "unified",
+       "type": "highlight",
+       "color": "red",
+       "style": "box",
+       "target": "aligned_bar"
+      }
+     ]
+    }
+   ],
+   "clear": true,
+   "title": "Alignment Creates the Magnet"
+  },
+  {
+   "beats": [
+    {
+     "say": "This collective power radiates outward as lines of magnetic flux, looping continuously from north to south.",
+     "draw": [
+      {
+       "x": 640,
+       "y": 70,
+       "id": "t5",
+       "cue": "power radiates",
+       "size": "lg",
+       "text": "Lines of Force",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "h": 120,
+       "w": 380,
+       "x": 640,
+       "y": 420,
+       "id": "core_bar",
+       "cue": "collective power",
+       "fill": "purple",
+       "size": "sm",
+       "text": "S N",
+       "type": "box",
+       "color": "purple"
+      },
+      {
+       "id": "field_top1",
+       "cue": "lines of magnetic flux",
+       "size": "sm",
+       "type": "curve",
+       "arrow": true,
+       "color": "teal",
+       "dashed": false,
+       "points": [
+        [
+         800,
+         360
+        ],
+        [
+         640,
+         200
+        ],
+        [
+         480,
+         360
+        ]
+       ]
+      },
+      {
+       "id": "field_bot1",
+       "cue": "north to south",
+       "size": "sm",
+       "type": "curve",
+       "arrow": true,
+       "color": "teal",
+       "dashed": false,
+       "points": [
+        [
+         800,
+         480
+        ],
+        [
+         640,
+         640
+        ],
+        [
+         480,
+         480
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "say": "Wider loops wrap even farther through the surrounding space.",
+     "draw": [
+      {
+       "id": "field_top2",
+       "cue": "Wider loops",
+       "size": "sm",
+       "type": "curve",
+       "arrow": true,
+       "color": "teal",
+       "dashed": false,
+       "points": [
+        [
+         830,
+         360
+        ],
+        [
+         640,
+         130
+        ],
+        [
+         450,
+         360
+        ]
+       ]
+      },
+      {
+       "id": "field_bot2",
+       "cue": "surrounding space",
+       "size": "sm",
+       "type": "curve",
+       "arrow": true,
+       "color": "teal",
+       "dashed": false,
+       "points": [
+        [
+         830,
+         480
+        ],
+        [
+         640,
+         710
+        ],
+        [
+         450,
+         480
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "say": "Whenever a piece of steel enters these lines, its own domains momentarily align, pulling it toward the magnet.",
+     "draw": [
+      {
+       "h": 90.36239999999998,
+       "w": 251.43599999999998,
+       "x": 1080,
+       "y": 280,
+       "id": "paperclip",
+       "cue": "piece of steel",
+       "fill": "gray",
+       "size": "sm",
+       "text": "Paperclip",
+       "type": "ellipse",
+       "color": "gray"
+      },
+      {
+       "id": "pull_arrow",
+       "to": "core_bar",
+       "x1": 944.2819999999999,
+       "x2": 840,
+       "y1": 323.183,
+       "y2": 356.3636363636364,
+       "cue": "pulling it",
+       "bend": 0,
+       "from": "paperclip",
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "red",
+       "dashed": false
+      },
+      {
+       "id": "hl_clip",
+       "cue": "domains momentarily align",
+       "type": "highlight",
+       "color": "red",
+       "style": "circle",
+       "target": "paperclip"
+      }
+     ]
+    }
+   ],
+   "clear": true,
+   "title": "The Magnetic Field Lines"
+  },
+  {
+   "beats": [
+    {
+     "say": "So every magnet in your world works through one unified principle: orderly alignment.",
+     "draw": [
+      {
+       "x": 640,
+       "y": 70,
+       "id": "t6",
+       "cue": "unified principle",
+       "size": "lg",
+       "text": "From Atoms to Everyday Life",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "h": 120,
+       "w": 260,
+       "x": 240,
+       "y": 260,
+       "id": "step1",
+       "cue": "every magnet",
+       "size": "sm",
+       "text": "1. Electron\nSpin",
+       "type": "box",
+       "color": "blue"
+      },
+      {
+       "h": 120,
+       "w": 260,
+       "x": 640,
+       "y": 260,
+       "id": "step2",
+       "cue": "alignment",
+       "size": "sm",
+       "text": "2. Aligned\nDomains",
+       "type": "box",
+       "color": "teal"
+      },
+      {
+       "h": 120,
+       "w": 260,
+       "x": 1040,
+       "y": 260,
+       "id": "step3",
+       "cue": "your world",
+       "size": "sm",
+       "text": "3. Magnetic\nField",
+       "type": "box",
+       "color": "purple"
+      },
+      {
+       "id": "flow1",
+       "to": "step2",
+       "x1": 380,
+       "x2": 500,
+       "y1": 260,
+       "y2": 260,
+       "cue": "works through",
+       "bend": 0,
+       "from": "step1",
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": false
+      },
+      {
+       "id": "flow2",
+       "to": "step3",
+       "x1": 780,
+       "x2": 900,
+       "y1": 260,
+       "y2": 260,
+       "cue": "orderly",
+       "bend": 0,
+       "from": "step2",
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": false
+      }
+     ]
+    },
+    {
+     "say": "From holding grocery notes on your fridge to spinning huge electric motors and generators.",
+     "draw": [
+      {
+       "x": 380,
+       "y": 480,
+       "id": "fridge_icon",
+       "cue": "fridge",
+       "size": "md",
+       "text": "Fridge Notes",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "x": 900,
+       "y": 480,
+       "id": "motor_icon",
+       "cue": "electric motors",
+       "size": "md",
+       "text": "Motors & Clean Energy",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "id": "app_l",
+       "to": "fridge_icon",
+       "x1": 900,
+       "x2": 486.86,
+       "y1": 306.6666666666667,
+       "y2": 444.38,
+       "cue": "holding grocery notes",
+       "bend": 0,
+       "from": "step3",
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": true
+      },
+      {
+       "id": "app_r",
+       "to": "motor_icon",
+       "x1": 995.4545454545455,
+       "x2": 922.6672727272727,
+       "y1": 330,
+       "y2": 444.38,
+       "cue": "generators",
+       "bend": 0,
+       "from": "step3",
+       "head": "end",
+       "size": "sm",
+       "type": "arrow",
+       "color": "ink",
+       "dashed": true
+      }
+     ]
+    },
+    {
+     "say": "Billions of microscopic electrons march in sync to create one of nature's greatest powers.",
+     "draw": [
+      {
+       "x": 640,
+       "y": 640,
+       "id": "final_punch",
+       "cue": "march in sync",
+       "size": "lg",
+       "text": "Microscopic Order -> Macroscopic\nPower",
+       "type": "text",
+       "align": "center",
+       "color": "ink"
+      },
+      {
+       "id": "hl_final",
+       "cue": "greatest powers",
+       "type": "highlight",
+       "color": "red",
+       "style": "box",
+       "target": "final_punch"
+      }
+     ]
+    }
+   ],
+   "clear": true,
+   "title": "Everyday Marvel"
+  }
+ ],
+ "summary": "Discover how tiny spinning electrons inside atoms team up to create magnetic domains and the invisible force fields we use every day.",
+ "suggestions": [
+  "What makes permanent magnets keep their field forever?",
+  "Can you destroy a magnet by dropping or heating it?",
+  "How does Earth produce its own magnetic field?"
+ ]
+}

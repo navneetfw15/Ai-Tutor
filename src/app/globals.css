@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------------------------------
+   Design tokens. The UI chrome follows the OS light/dark preference; the whiteboard itself
+   always stays a bright white board, like a real one.
+   ------------------------------------------------------------------------------------------ */
+:root {
+  --bg: #f6f4ee;
+  --surface: #ffffff;
+  --surface-2: #f1efe8;
+  --line: #e4e0d5;
+  --fg: #16151b;
+  --fg-muted: #66646f;
+  --fg-faint: #9a98a3;
+  --accent: #5645ff;
+  --accent-2: #8b5cf6;
+  --accent-soft: #ecebff;
+  --accent-fg: #ffffff;
+  --ok: #138a43;
+  --danger: #d92d2d;
+  --danger-soft: #fdecec;
+  --board: #fffdf8;
+  --board-dot: #e9e3d2;
+  --board-frame: #d9d5c9;
+  --shadow-sm: 0 1px 2px rgb(24 20 40 / 0.06), 0 1px 1px rgb(24 20 40 / 0.04);
+  --shadow-md: 0 10px 30px -12px rgb(40 28 100 / 0.22), 0 2px 8px rgb(24 20 40 / 0.05);
+  --shadow-lg: 0 30px 70px -28px rgb(50 30 130 / 0.38), 0 6px 18px rgb(24 20 40 / 0.06);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0d0d12;
+    --surface: #17171e;
+    --surface-2: #1f1f28;
+    --line: #2a2a35;
+    --fg: #f3f2f8;
+    --fg-muted: #a09eac;
+    --fg-faint: #6f6d7b;
+    --accent: #8b83ff;
+    --accent-2: #b18cff;
+    --accent-soft: #24223f;
+    --accent-fg: #0d0d12;
+    --ok: #4ade80;
+    --danger: #ff7b7b;
+    --danger-soft: #35171a;
+    --board-frame: #34343f;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+    --shadow-md: 0 12px 32px -12px rgb(0 0 0 / 0.65), 0 2px 8px rgb(0 0 0 / 0.35);
+    --shadow-lg: 0 34px 80px -30px rgb(0 0 0 / 0.8), 0 6px 18px rgb(0 0 0 / 0.4);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--fg-muted);
+  --color-faint: var(--fg-faint);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-fg: var(--accent-fg);
+  --color-ok: var(--ok);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-board: var(--font-kalam), "Segoe Print", "Comic Sans MS", cursive;
+  --shadow-soft: var(--shadow-sm);
+  --shadow-card: var(--shadow-md);
+  --shadow-pop: var(--shadow-lg);
+  --animate-fade-up: fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 0.3s ease-out both;
+  --animate-pop: pop 0.35s cubic-bezier(0.2, 1.2, 0.3, 1) both;
+  --animate-pulse-ring: pulse-ring 1.8s ease-out infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-dots: dots 1.2s ease-in-out infinite;
+  --animate-eq: eq 0.9s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.7);
+    opacity: 0;
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes dots {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+@keyframes eq {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Subtle scrollbars */
+.scroll-soft {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--fg) 22%, transparent) transparent;
+}
+.scroll-soft::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-soft::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--fg) 20%, transparent);
+  border-radius: 99px;
+}
+
+/* Premium ambient background used on the landing page */
+.ambient {
+  background:
+    radial-gradient(60rem 36rem at 12% -8%, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%),
+    radial-gradient(50rem 30rem at 95% 4%, color-mix(in srgb, var(--accent-2) 12%, transparent), transparent 60%),
+    var(--bg);
+}
+
+.gradient-text {
+  background: linear-gradient(100deg, var(--accent) 0%, var(--accent-2) 60%, #ec6bb5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #fff;
+  box-shadow: 0 8px 20px -8px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.07);
+}
+.btn-primary:active:not(:disabled) {
+  transform: translateY(1px) scale(0.99);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+/* On desktop the whole player (board, captions, controls, chapters) fits in the viewport height:
+   the board column is as wide as a 16:10 board can be for the space left under the header, and the
+   chat column takes the rest. On short screens the chapter strip hides to give the board more room. */
+:root {
+  --stage-reserve: 23rem;
+}
+@media (max-height: 820px) {
+  :root {
+    --stage-reserve: 19.5rem;
+  }
+  .chapters-strip {
+    display: none;
+  }
+}
+@media (min-width: 1024px) {
+  .workspace-grid {
+    grid-template-columns: minmax(0, max(34rem, calc((100dvh - var(--stage-reserve)) * 1.6))) minmax(22rem, 34rem);
+    justify-content: center;
+  }
+}
+
+/* Whiteboard */
+.board-paper {
+  background-color: var(--board);
+  background-image: radial-gradient(circle, var(--board-dot) 1.2px, transparent 1.4px);
+  background-size: 28px 28px;
+}
+.board-text {
+  font-family: var(--font-board);
+}
+.pointer-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulse-ring 1.6s ease-out infinite;
+}
+
+/* Range input (scrubber) */
+input[type="range"].scrub {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  width: 100%;
+  height: 28px;
+  cursor: pointer;
+  touch-action: none;
+}
+input[type="range"].scrub::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 99px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent-2) var(--pct, 0%),
+    color-mix(in srgb, var(--fg) 14%, transparent) var(--pct, 0%)
+  );
+}
+input[type="range"].scrub::-moz-range-track {
+  height: 6px;
+  border-radius: 99px;
+  background: color-mix(in srgb, var(--fg) 14%, transparent);
+}
+input[type="range"].scrub::-moz-range-progress {
+  height: 6px;
+  border-radius: 99px;
+  background: linear-gradient(to right, var(--accent), var(--accent-2));
+}
+input[type="range"].scrub::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 18px;
+  width: 18px;
+  margin-top: -6px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+  transition: transform 0.12s;
+}
+input[type="range"].scrub::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--accent);
+  box-shadow: 0 2px 6px rgb(0 0 0 / 0.25);
+}
+input[type="range"].scrub:active::-webkit-slider-thumb {
+  transform: scale(1.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
