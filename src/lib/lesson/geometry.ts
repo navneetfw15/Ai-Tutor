@@ -20,6 +20,14 @@ export const rectW = (r: Rect) => r.x1 - r.x0;
 export const rectH = (r: Rect) => r.y1 - r.y0;
 export const rectCenter = (r: Rect): Point => [(r.x0 + r.x1) / 2, (r.y0 + r.y1) / 2];
 
+/** How far two rects penetrate each other along each axis (zero or negative means they do not touch on that axis). */
+export function overlapDepth(a: Rect, b: Rect): { x: number; y: number } {
+  return {
+    x: Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0),
+    y: Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0),
+  };
+}
+
 export function unionRects(rects: Rect[]): Rect | null {
   if (rects.length === 0) return null;
   return {

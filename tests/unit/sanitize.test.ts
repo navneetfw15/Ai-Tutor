@@ -64,6 +64,82 @@ describe("sanitizeScript", () => {
     expect(box.text).toBeTruthy();
   });
 
+  describe("shapes that grow into their neighbours", () => {
+    const solid = (a: Action) => actionRect(a)!;
+    const touching = (a: Action, b: Action) => {
+      const p = solid(a);
+      const q = solid(b);
+      return Math.min(p.x1, q.x1) - Math.max(p.x0, q.x0) > 0 && Math.min(p.y1, q.y1) - Math.max(p.y0, q.y0) > 0;
+    };
+
+    it("pushes a shape clear when growing to fit its label created the overlap", () => {
+      // Spaced for their requested sizes (they just touch), but the labels make both grow.
+      const { actions } = firstScene([
+        { type: "ellipse", id: "e", x: 340, y: 350, w: 200, h: 120, text: "Virus\nParticle", size: "md" },
+        { type: "diamond", id: "d", x: 540, y: 350, w: 200, h: 130, text: "Antigen\nKey", size: "md" },
+      ]);
+      const [e, d] = actions;
+      expect((e as ShapeAction).w).toBeGreaterThan(200); // sanity: growth is what causes the clash
+      expect((d as ShapeAction).w).toBeGreaterThan(200);
+      expect(touching(e, d)).toBe(false);
+      expect((d as ShapeAction).y).toBe(350); // moved along the axis of least overlap only
+    });
+
+    it("keeps connectors glued to the shape's final position", () => {
+      const { actions } = firstScene([
+        { type: "ellipse", id: "e", x: 340, y: 350, w: 200, h: 120, text: "Virus\nParticle", size: "md" },
+        { type: "diamond", id: "d", x: 540, y: 350, w: 200, h: 130, text: "Antigen\nKey", size: "md" },
+        { type: "arrow", id: "a", from: "e", to: "d" },
+      ]);
+      const arrow = actions[2] as { x1: number; x2: number };
+      expect(arrow.x1).toBeCloseTo(solid(actions[0]).x1 + 10, 3);
+      expect(arrow.x2).toBeCloseTo(solid(actions[1]).x0 - 10, 3);
+      expect(arrow.x2).toBeGreaterThan(arrow.x1); // the arrow still points from the first shape to the second
+    });
+
+    it("leaves deliberate overlaps alone (Venn diagrams)", () => {
+      // The model asked for overlapping circles; their long labels make both grow even more.
+      const { actions } = firstScene([
+        { type: "ellipse", id: "a", x: 500, y: 400, w: 200, h: 160, text: "Cats and kittens everywhere", size: "md" },
+        { type: "ellipse", id: "b", x: 620, y: 400, w: 200, h: 160, text: "Dogs and puppies everywhere", size: "md" },
+      ]);
+      expect((actions[0] as ShapeAction).w).toBeGreaterThan(200); // the growth path really ran
+      expect((actions[0] as ShapeAction).x).toBe(500);
+      expect((actions[1] as ShapeAction).x).toBe(620);
+    });
+
+    it("leaves a shape drawn inside a bigger one alone", () => {
+      const { actions } = firstScene([
+        { type: "box", id: "cell", x: 640, y: 400, w: 600, h: 400 },
+        { type: "ellipse", id: "nucleus", x: 640, y: 400, w: 120, h: 80, text: "Nucleus of the cell", size: "sm" },
+      ]);
+      expect((actions[1] as ShapeAction).w).toBeGreaterThan(120); // the growth path really ran
+      expect((actions[1] as ShapeAction).x).toBe(640);
+      expect((actions[1] as ShapeAction).y).toBe(400);
+    });
+
+    it("does not move shapes that were already well spaced", () => {
+      const { actions } = firstScene([
+        { type: "box", id: "a", x: 240, y: 400, w: 260, h: 130, text: "Sun", size: "md" },
+        { type: "box", id: "b", x: 640, y: 400, w: 260, h: 130, text: "Plant", size: "md" },
+        { type: "box", id: "c", x: 1040, y: 400, w: 260, h: 130, text: "Sugar", size: "md" },
+      ]);
+      expect(actions.map((a) => (a as ShapeAction).x)).toEqual([240, 640, 1040]);
+    });
+
+    it("still keeps every shape inside the canvas after nudging", () => {
+      const { actions } = firstScene([
+        { type: "ellipse", id: "e", x: 960, y: 350, w: 200, h: 120, text: "Virus\nParticle", size: "md" },
+        { type: "diamond", id: "d", x: 1160, y: 350, w: 200, h: 130, text: "Antigen\nKey", size: "md" },
+      ]);
+      for (const a of actions) {
+        const r = solid(a);
+        expect(r.x0).toBeGreaterThanOrEqual(CANVAS_MARGIN - 0.001);
+        expect(r.x1).toBeLessThanOrEqual(CANVAS.width - CANVAS_MARGIN + 0.001);
+      }
+    });
+  });
+
   it("glues arrows to the shapes they reference", () => {
     const { actions } = firstScene([
       { type: "box", id: "a", x: 300, y: 400, w: 200, h: 100 },

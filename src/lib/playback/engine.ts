@@ -163,6 +163,9 @@ export class PlaybackEngine {
     this.cancelLoop();
     if (source.mode === "audio") this.ensureAudio();
     this.setTime(startTime);
+    // Start fetching the narration now: by the time the learner presses play it is already buffered,
+    // instead of the first play waiting for a network round trip.
+    if (source.mode === "audio") this.preloadInto(this.active, this.phase === "speaking" ? this.scene : this.scene + 1);
     this.emit();
   }
 
@@ -502,10 +505,14 @@ export class PlaybackEngine {
   }
 
   private preloadNext(sceneIndex: number) {
+    this.preloadInto(1 - this.active, sceneIndex);
+  }
+
+  /** Point an audio element at a scene's clip and let the browser start buffering it. */
+  private preloadInto(slot: number, sceneIndex: number) {
     const url = this.source?.clipUrls[sceneIndex];
     if (!url || this.source?.mode !== "audio") return;
     if (this.loadedScene.includes(sceneIndex)) return;
-    const slot = 1 - this.active;
     const audio = this.audios[slot];
     audio.pause();
     audio.src = url;

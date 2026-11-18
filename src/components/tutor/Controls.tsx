@@ -39,9 +39,13 @@ export function Controls({ engine, timeline, prefs, onPrefs }: Props) {
   };
 
   return (
-    <div className="rounded-2xl border border-line bg-surface px-3 py-2 shadow-soft sm:p-4" role="group" aria-label="Lesson player">
-      {/* Scrubber with chapter ticks */}
-      <div className="relative">
+    <div
+      className="rounded-2xl border border-line bg-surface px-3 py-2 shadow-soft max-sm:grid max-sm:grid-cols-[minmax(0,1fr)_auto] max-sm:items-center max-sm:gap-x-2 max-sm:gap-y-1 sm:p-4"
+      role="group"
+      aria-label="Lesson player"
+    >
+      {/* Scrubber with chapter ticks. On phones the time sits at the end of this row. */}
+      <div className="relative max-sm:col-start-1 max-sm:row-start-1">
         <input
           type="range"
           className="scrub"
@@ -72,9 +76,9 @@ export function Controls({ engine, timeline, prefs, onPrefs }: Props) {
         )}
       </div>
 
-      <div className="mt-1 flex items-center gap-x-1.5 sm:gap-x-2">
-        <div className="flex items-center gap-1">
-          <IconBtn label="Restart" onClick={() => engine.restart()} disabled={!loaded} hideOnPhone>
+      <div className="mt-1 flex items-center gap-x-1.5 max-sm:contents sm:gap-x-2">
+        <div className="flex items-center gap-1 max-sm:col-start-1 max-sm:row-start-2 max-sm:gap-0.5">
+          <IconBtn label="Restart" onClick={() => engine.restart()} disabled={!loaded}>
             <RotateCcw className="size-[18px]" />
           </IconBtn>
           <IconBtn label="Back 5 seconds" onClick={() => engine.seekBy(-5000)} disabled={!loaded}>
@@ -86,7 +90,7 @@ export function Controls({ engine, timeline, prefs, onPrefs }: Props) {
             disabled={!loaded}
             aria-label={playing ? "Pause" : ended ? "Replay" : "Play"}
             data-testid="play-pause"
-            className="btn-primary mx-0.5 grid size-11 place-items-center rounded-full transition-transform sm:mx-1 sm:size-12"
+            className="btn-primary mx-0.5 grid size-11 shrink-0 place-items-center rounded-full transition-transform sm:mx-1 sm:size-12"
           >
             {buffering && playing ? (
               <Loader2 className="size-5 animate-spin" />
@@ -103,11 +107,14 @@ export function Controls({ engine, timeline, prefs, onPrefs }: Props) {
           </IconBtn>
         </div>
 
-        <div className="ml-1 min-w-[4.6rem] text-[13px] tabular-nums text-muted sm:min-w-[5.5rem] sm:text-sm" data-testid="time-label">
+        <div
+          className="ml-1 min-w-[4.6rem] text-[13px] tabular-nums text-muted max-sm:col-start-2 max-sm:row-start-1 max-sm:ml-0 max-sm:min-w-0 max-sm:text-right sm:min-w-[5.5rem] sm:text-sm"
+          data-testid="time-label"
+        >
           <span className="font-medium text-fg">{formatTime(time)}</span> / {formatTime(duration)}
         </div>
 
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ml-auto flex items-center gap-1 max-sm:col-start-2 max-sm:row-start-2">
           <label className="relative">
             <span className="sr-only">Playback speed</span>
             <select

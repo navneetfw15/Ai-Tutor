@@ -4,6 +4,7 @@ import {
   clamp,
   edgePoint,
   estimateTextSize,
+  overlapDepth,
   pointerAnchor,
   rectCenter,
   shiftIntoCanvas,
@@ -26,6 +27,7 @@ import {
   type Point,
   type Scene,
   type Script,
+  type ShapeAction,
   type SizeToken,
 } from "./types";
 
@@ -173,6 +175,50 @@ function growForLabel(
   }
 }
 
+/** Space kept between a nudged shape and the neighbour it was pushed away from. */
+const NUDGE_GAP = 28;
+/** A requested overlap deeper than this on both axes is treated as deliberate (Venn diagram, nesting). */
+const DELIBERATE_OVERLAP = 8;
+
+/** Closed shapes and graphs: the elements that must not collide with each other. */
+type Solid = ShapeAction | GraphAction;
+/** The rect each shape had before growing to fit its label (shapes without growth are not listed). */
+const requestedRects = new WeakMap<Action, Rect>();
+const isSolid = (a: Action): a is Solid =>
+  a.type === "box" || a.type === "ellipse" || a.type === "diamond" || a.type === "triangle" || a.type === "graph";
+
+/**
+ * Growing a shape to fit its label can run it into a neighbour that the model spaced for the
+ * shape's requested size. Push the grown shape clear, but only for overlaps that the growth
+ * introduced: overlaps that were already there in the requested layout are intentional and stay.
+ * Nothing references a shape before it is registered, so moving it here is safe for connectors.
+ */
+function nudgeClearOfNeighbours(action: Solid, requested: Rect, known: Map<string, Action>) {
+  for (let pass = 0; pass < 4; pass++) {
+    const mine = actionRect(action)!;
+    let moved = false;
+    for (const other of known.values()) {
+      if (!isSolid(other)) continue;
+      const theirs = actionRect(other)!;
+      const now = overlapDepth(mine, theirs);
+      if (now.x <= 0 || now.y <= 0) continue;
+      const was = overlapDepth(requested, requestedRects.get(other) ?? theirs);
+      if (was.x > DELIBERATE_OVERLAP && was.y > DELIBERATE_OVERLAP) continue;
+
+      const [mx, my] = rectCenter(mine);
+      const [tx, ty] = rectCenter(theirs);
+      if (now.x <= now.y) action.x += (mx >= tx ? 1 : -1) * (now.x + NUDGE_GAP);
+      else action.y += (my >= ty ? 1 : -1) * (now.y + NUDGE_GAP);
+      const { dx, dy } = shiftIntoCanvas(actionRect(action)!);
+      action.x += dx;
+      action.y += dy;
+      moved = true;
+      break; // geometry changed: re-check against every neighbour
+    }
+    if (!moved) return;
+  }
+}
+
 function sanitizeAction(raw: unknown, ctx: Ctx, counter: { n: number }): Action | null {
   if (!isObj(raw) || typeof raw.type !== "string") return null;
   const type = raw.type;
@@ -215,6 +261,7 @@ function sanitizeAction(raw: unknown, ctx: Ctx, counter: { n: number }): Action 
       const defaults = { box: [260, 120], ellipse: [250, 150], diamond: [260, 170], triangle: [230, 190] }[type];
       let w = clamp(num(raw.w) ?? defaults[0], 60, 900);
       let h = clamp(num(raw.h) ?? defaults[1], 50, 600);
+      const requested: Rect = { x0: x - w / 2, y0: y - h / 2, x1: x + w / 2, y1: y + h / 2 };
       const label = multilineStr(raw.text, 90);
       let size = pickSize(raw.size, "sm");
       let text: string | undefined;
@@ -241,6 +288,10 @@ function sanitizeAction(raw: unknown, ctx: Ctx, counter: { n: number }): Action 
       const { dx, dy } = shiftIntoCanvas(actionRect(action)!);
       action.x += dx;
       action.y += dy;
+      if (w !== requested.x1 - requested.x0 || h !== requested.y1 - requested.y0) {
+        nudgeClearOfNeighbours(action as ShapeAction, requested, ctx.known);
+        requestedRects.set(action, requested); // so later neighbours can tell deliberate overlaps from growth
+      }
       return action;
     }
 

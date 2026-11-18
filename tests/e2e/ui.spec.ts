@@ -182,11 +182,10 @@ test.describe("lesson player", () => {
     await engineSeek(page, 2000);
     await page.getByRole("button", { name: "Back 5 seconds" }).click();
     expect((await engineSnap(page)).time).toBe(0); // clamped
-    if (!isPhone(page)) {
-      await engineSeek(page, 40_000);
-      await page.getByRole("button", { name: "Restart" }).click();
-      expect((await engineSnap(page)).time).toBe(0);
-    }
+    // Restart is part of the player on every screen size, phones included.
+    await engineSeek(page, 40_000);
+    await page.getByRole("button", { name: "Restart" }).click();
+    expect((await engineSnap(page)).time).toBe(0);
   });
 
   test("playback speed", async ({ page }) => {
@@ -393,6 +392,36 @@ test.describe("lesson player", () => {
       expect(board.width).toBeGreaterThan(520);
     } else {
       await expect(play).toBeVisible();
+    }
+  });
+
+  test("every control fits on one screen of a small phone (320-390px) and nothing is cut off", async ({ page }) => {
+    test.skip(!isDesktop(page), "resizes the viewport itself, so one project is enough");
+    const box = async (loc: ReturnType<Page["getByRole"]>) => (await loc.boundingBox())!;
+    for (const width of [320, 360, 390]) {
+      await page.setViewportSize({ width, height: 740 });
+      const panel = await box(page.getByRole("group", { name: "Lesson player" }));
+      const scrub = await box(page.getByTestId("scrubber"));
+      const time = await box(page.getByTestId("time-label"));
+      // Left to right: restart, back 5s, play, forward 5s, speed, captions - in one row, never overlapping.
+      const row = [
+        await box(page.getByRole("button", { name: "Restart" })),
+        await box(page.getByRole("button", { name: "Back 5 seconds" })),
+        await box(page.getByTestId("play-pause")),
+        await box(page.getByRole("button", { name: "Forward 5 seconds" })),
+        await box(page.getByTestId("speed")),
+        await box(page.getByRole("button", { name: /captions/i })),
+      ];
+      for (let i = 0; i < row.length - 1; i++) {
+        expect(row[i].x + row[i].width, `${width}px: control ${i} overlaps control ${i + 1}`).toBeLessThanOrEqual(row[i + 1].x + 0.5);
+        expect(Math.abs(row[i].y + row[i].height / 2 - (row[i + 1].y + row[i + 1].height / 2)), `${width}px: controls wrap`).toBeLessThan(14);
+      }
+      const last = row[row.length - 1];
+      expect(last.x + last.width, `${width}px: last control is cut off`).toBeLessThanOrEqual(panel.x + panel.width);
+      expect(scrub.x + scrub.width, `${width}px: time overlaps the scrubber`).toBeLessThanOrEqual(time.x + 0.5);
+      expect(time.x + time.width).toBeLessThanOrEqual(panel.x + panel.width);
+      expect(Math.abs(row[2].width - row[2].height), "play button stays a circle").toBeLessThan(1);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(0);
     }
   });
 

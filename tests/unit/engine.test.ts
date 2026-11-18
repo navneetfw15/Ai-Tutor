@@ -153,6 +153,22 @@ describe("PlaybackEngine - audio mode", () => {
     expect(s.duration).toBe(5800);
   });
 
+  it("starts fetching the first scene's narration as soon as the lesson loads, so the first play does not wait", () => {
+    const pre = r.audios.find((a) => a.src === "/a0.mp3");
+    expect(pre).toBeDefined();
+    expect(r.audios.every((a) => a.paused)).toBe(true); // fetched, but silent until play
+    r.engine.play();
+    r.run(100);
+    expect(active(r)).toBe(pre); // the preloaded element is the one that plays
+  });
+
+  it("preloads the scene a lesson is resumed in, not scene 0", () => {
+    r.engine.load({ timeline: makeTimeline(), mode: "audio", clipUrls: ["/a0.mp3", "/a1.mp3", "/a2.mp3"] }, 2600);
+    expect(r.engine.getSnapshot().scene).toBe(1);
+    expect(r.audios.some((a) => a.src === "/a1.mp3")).toBe(true);
+    expect(r.audios.filter((a) => a.src === "/a0.mp3")).toHaveLength(0); // nothing wasted on scene 0
+  });
+
   it("uses the audio element as the master clock", () => {
     r.engine.play();
     r.run(1000);
